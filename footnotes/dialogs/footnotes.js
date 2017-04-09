@@ -42,8 +42,10 @@
                             type: 'text',
                             id: 'footnote_id',
                             name: 'footnote_id',
+                            /**
+                            !+AH(2017-04-09)
                             label: 'No existing footnotes',
-
+                            **/
 
                             // Called by the main setupContent call on dialog initialization.
                             setup: function( element ) {
@@ -54,13 +56,20 @@
                                 dialog.footnotes_el = $el;
 
                                 editor = dialog.getParentEditor();
+                                var editor_id = editor.element.$.id;
                                 // Dynamically add existing footnotes:
-                                $footnotes = $(editor.editable().$).find('.footnotes ol');
+                                //$footnotes = $(editor.editable().$).find('.footnotes ol');
+                                /**
+                                !+AH(2017-04-09)
+                                $footnotes = $("#footnotes-container div[data-for='" + editor_id + "']").find('ol');
                                 $this = this;
-
+                                **/
+                                $el.children('div').css('display', 'none');
+                                /***
+                                !+AH(2017-04-09) Commented out for 
                                 if ($footnotes.length > 0) {
                                     if ($el.find('p').length == 0) {
-                                        $el.append('<p style="margin-bottom: 10px;"><strong>OR:</strong> Choose footnote:</p><ol class="footnotes_list"></ol>');
+                                        $el.append('<p style="margin-bottom: 10px;"><strong>OR:</strong> Choose footnote:</p><ul class="footnotes_list"></ul>');
                                     } else {
                                         $el.find('ol').empty();
                                     }
@@ -69,11 +78,11 @@
                                     $footnotes.find('li').each(function(){
                                         var $item = $(this);
                                         var footnote_id = $item.attr('data-footnote-id');
-                                        radios += '<li style="margin-left: 15px;"><input type="radio" name="footnote_id" value="' + footnote_id + '" id="fn_' + footnote_id + '" /> <label for="fn_' + footnote_id + '" style="white-space: normal; display: inline-block; padding: 0 25px 0 5px; vertical-align: top; margin-bottom: 10px;">' + $item.find('cite').text() + '</label></li>';
+                                        radios += '<li style="margin-left: 15px;"><input type="radio" name="footnote_id" value="' + footnote_id + '" id="fn_' + footnote_id + '" /> <label for="fn_' + footnote_id + '" style="white-space: normal; display: inline-block; padding: 0 25px 0 5px; vertical-align: top; margin-bottom: 10px;">' + $item.text() + '</label></li>';
                                     });
 
                                     $el.children('label,div').css('display', 'none');
-                                    $el.find('ol').html(radios);
+                                    $el.find('ul').html(radios);
                                     $el.find(':radio').change(function(){;
                                         $el.find(':text').val($(this).val());
                                     });
@@ -81,6 +90,7 @@
                                 } else {
                                     $el.children('div').css('display', 'none');
                                 }
+                                **/
                             }
                         }
                     ]
@@ -147,7 +157,7 @@
                 var footnote_id     = dialog.getValueOf('tab-basic', 'footnote_id');
                 var footnote_data   = footnote_editor.getData();
                 footnote_editor.destroy();
-
+                console.log(" FOOTNOTED ID = ", footnote_id, footnote_data);
                 if (footnote_id == '') {
                     // No existing id selected, check for new footnote:
                     if (footnote_data == '') {
